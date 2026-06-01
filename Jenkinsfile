@@ -79,23 +79,6 @@ pipeline {
                 }
             }
         }
-
-        stage('AWS Verification') {
-            steps {
-                script {
-                    withCredentials([
-                        [$class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: env.AWS_EKS_CLUSTER_CREDENTIALS]
-                    ]) {
-
-                        sh '''
-                            aws sts get-caller-identity
-                        '''
-                    }
-                }
-            }
-        }
-
         stage('Deploying to EKS') {
             steps {
                 script {
