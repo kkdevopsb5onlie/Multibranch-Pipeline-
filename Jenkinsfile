@@ -7,6 +7,7 @@ pipeline {
             steps {
                 script {
                     println("Executing test")
+                    sh "whoami
                 }
             }
         }
