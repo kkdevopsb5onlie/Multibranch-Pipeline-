@@ -79,50 +79,22 @@ pipeline {
                 }
             }
         }
+
         stage('AWS Verification') {
-    steps {
-        script {
-            withCredentials([
-                [$class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: env.AWS_EKS_CLUSTER_CREDENTIALS]
-            ]) {
-                sh '''
-                    aws sts get-caller-identity
-                '''
+            steps {
+                script {
+                    withCredentials([
+                        [$class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: env.AWS_EKS_CLUSTER_CREDENTIALS]
+                    ]) {
+
+                        sh '''
+                            aws sts get-caller-identity
+                        '''
+                    }
+                }
             }
         }
-    }
-}
-
-stage('Deploying to EKS') {
-    steps {
-        script {
-            withCredentials([
-                [$class: 'AmazonWebServicesCredentialsBinding',
-                credentialsId: env.AWS_EKS_CLUSTER_CREDENTIALS]
-            ]) {
-
-                sh """
-                    export AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID
-                    export AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY
-                    export AWS_DEFAULT_REGION=${env.REGION}
-
-                    aws eks update-kubeconfig \
-                        --region ${env.REGION} \
-                        --name ${env.EKS_CLUSTER_NAME}
-
-                    kubectl apply -f db-namespace.yml
-                    kubectl apply -f db-storage-class.yml
-                    kubectl apply -f db-pv.yml
-                    kubectl apply -f db-pvc.yml
-                    kubectl apply -f db-secrets.yml
-                    kubectl apply -f db-deployment.yml
-                    kubectl apply -f db-service.yml
-                """
-            }
-        }
-    }
-}
 
         stage('Deploying to EKS') {
             steps {
