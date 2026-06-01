@@ -94,7 +94,7 @@ pipeline {
                             export AWS_DEFAULT_REGION=${env.REGION}
                         """
                         println("aws eks update-kubeconfig --region ${env.REGION}  --name ${env.EKS_CLUSTER_NAME}")
-                        Println("kubectl apply -f db-namespace.yml & kubectl apply -f db-storage-class.yml")
+                        println("kubectl apply -f db-namespace.yml & kubectl apply -f db-storage-class.yml")
                     }
                 }
             }
