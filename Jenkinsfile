@@ -71,5 +71,27 @@ pipeline {
       stage ('deploying to EKS') {
         steps {
           script {
+             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${env.AWS_EKS_CLUSTER_CREDENTIAL}"]]) {
+                        sh """
+                            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                            export AWS_DEFAULT_REGION="${env.REGION}"
+                            echo "aws eks update-kubeconfig --region ${AWS_DEFAULT_REGION) --name ${env.EKS_CLSUTER_NAME}"
+                       """
+                      
+                      # Apply Kubernetes manifests
+                      echo "kubectl apply -f db-namespace.yml \
+                      kubectl apply -f db-storage-class.yml \
+                      kubectl apply -f db-pv.yml \
+                      kubectl apply -f db-pvc.yml \
+                      kubectl apply -f db-secrets.yml \
+                      kubectl apply -f db-deployment.yml \
+                      kubectl apply -f db-service.yml"
+                    }
+                   }
+                 }
+               }
+            }
+        }
             
 '
