@@ -82,7 +82,7 @@ pipeline {
         stage('Deploying to EKS') {
             steps {
                 script {
-
+                   println("Used this credentails ${env.AWS_EKS_CLUSTER_CREDENTIALS} id for deploying eks")
                     withCredentials([
                         [$class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: env.AWS_EKS_CLUSTER_CREDENTIALS]
