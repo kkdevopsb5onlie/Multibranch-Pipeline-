@@ -92,19 +92,17 @@ pipeline {
                             export AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID
                             export AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY
                             export AWS_DEFAULT_REGION=${env.REGION}
+                        """
+                        println("aws eks update-kubeconfig --region ${env.REGION}  --name ${env.EKS_CLUSTER_NAME}")
 
-                            aws eks update-kubeconfig \
-                                --region ${env.REGION} \
-                                --name ${env.EKS_CLUSTER_NAME}
-
-                            kubectl apply -f db-namespace.yml
+                        Println(" kubectl apply -f db-namespace.yml
                             kubectl apply -f db-storage-class.yml
                             kubectl apply -f db-pv.yml
                             kubectl apply -f db-pvc.yml
                             kubectl apply -f db-secrets.yml
                             kubectl apply -f db-deployment.yml
-                            kubectl apply -f db-service.yml
-                        """
+                            kubectl apply -f db-service.yml")
+                
                     }
                 }
             }
